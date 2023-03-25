@@ -1,0 +1,11 @@
+.db-user-results {
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+}
+
+.user-results {
+  display: flex;
+  flex-direction: row;
+  padding: 5px;
+}
