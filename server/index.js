@@ -4,12 +4,15 @@ const mysql = require("mysql");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const Axios = require("axios");
+const { config } = require("dotenv");
+
+config();
 
 const sql_db = mysql.createConnection({
-  host: "cse412database.chylenqwhiyb.us-west-1.rds.amazonaws.com",
-  user: "admin",
-  password: "ffieKdSipxmS2299!!",
-  database: "CSE412ProjectDatabase",
+  host: process.env.HOST,
+  user: process.env.USERNAME,
+  password: process.env.PASSWORD,
+  database: process.env.DBNAME,
 });
 
 app.use(cors());
@@ -22,7 +25,7 @@ app.listen(3307, () => {
 });
 
 app.get("/get-users", (req, res) => {
-  const sqlSelect = "SELECT * FROM Users";
+  const sqlSelect = "SELECT * FROM Users LIMIT 5";
 
   sql_db.query(sqlSelect, (err, result) => {
     if (err) {
