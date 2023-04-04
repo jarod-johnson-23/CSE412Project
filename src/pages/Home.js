@@ -1,11 +1,11 @@
 import "./Home.css";
 import { useState, useEffect, useContext } from "react";
-import { UserContext } from "./../UserContext";
+import { useCookies } from "react-cookie";
 
 function Home() {
-  const [user, setUser] = useContext(UserContext);
+  const [cookies, setCookie] = useCookies(["user"]);
 
-  return <h1>{user.fName + user.lName}</h1>;
+  return <h1>{cookies.user.fName + cookies.user.lName}</h1>;
 }
 
 export default Home;

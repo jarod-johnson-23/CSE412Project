@@ -1,13 +1,11 @@
 import "./Login.css";
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import Axios from "axios";
 import { useNavigate } from "react-router-dom";
-
-// import bcrypt from "bcryptjs";
-import { UserContext } from "./../UserContext";
+import { useCookies } from "react-cookie";
 
 function Login() {
-  const [user, setUser] = useContext(UserContext);
+  const [cookies, setCookie, removeCookie] = useCookies(["user"]);
   const [email, set_email] = useState("");
   const [password, set_password] = useState("");
 
@@ -22,7 +20,7 @@ function Login() {
       if (response.data.length === 0) {
         console.log("No Account Found");
       } else {
-        setUser(response.data[0]);
+        setCookie("user", JSON.stringify(response.data[0]), { path: "/" });
         navigate("/home");
       }
     });
@@ -60,6 +58,14 @@ function Login() {
         }}
       >
         Login
+      </button>
+      <button
+        className="default-btn"
+        onClick={(e) => {
+          navigate("/sign-up");
+        }}
+      >
+        Sign Up
       </button>
       {/* <div className="db-user-results">
         {db_results.map((val, key) => {

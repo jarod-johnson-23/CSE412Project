@@ -1,14 +1,14 @@
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { useState, createContext } from "react";
+import { useState } from "react";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import Home from "./pages/Home";
-import { UserProvider } from "./UserContext";
+import { CookiesProvider } from "react-cookie";
 
 function App() {
   return (
-    <UserProvider>
+    <CookiesProvider>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Login />} />
@@ -16,7 +16,7 @@ function App() {
           <Route path="/home" element={<Home />} />
         </Routes>
       </BrowserRouter>
-    </UserProvider>
+    </CookiesProvider>
   );
 }
 
