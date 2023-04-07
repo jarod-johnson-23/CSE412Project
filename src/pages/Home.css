@@ -8,6 +8,8 @@
   font-size: 18px;
   font-weight: 600;
   transition: 0.4s;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+  margin: 15px;
 }
 
 .home-body .default-btn:hover {
@@ -15,4 +17,59 @@
   background-color: #fff;
   color: #e8871e;
   scale: 1.06;
+}
+
+.home-body {
+  width: 90%;
+  margin: 25px 5% 15px 5%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.profile-card {
+  width: 23%;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  border: 2px solid #e8871e;
+  border-radius: 10px;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.profile-card p {
+  width: calc(100% - 15px);
+}
+
+.profile-body {
+  display: flex;
+  flex-direction: column;
+  width: 73%;
+  height: fit-content;
+  min-height: 400px;
+  border: 2px solid #e8871e;
+  border-radius: 10px;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.big-number {
+  font-size: 40px;
+  font-weight: 600;
+  padding-top: 50px;
+}
+
+.section {
+  width: 100%;
+  min-height: 200px;
+  border-bottom: 2px solid #e8871e;
+}
+
+.section:last-child {
+  border-bottom: none;
+}
+
+.profile-body h2 {
+  margin-left: 15px;
 }

@@ -15,6 +15,7 @@ function SignUp() {
   const [password, set_password] = useState("");
   const [hometown, set_hometown] = useState("");
   const error1 = document.querySelector(".su-error-text");
+  const regex = new RegExp(`^\\d{4}-\\d{2}-\\d{2}$`);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -28,12 +29,12 @@ function SignUp() {
       lName.length === 0 ||
       hometown.length === 0 ||
       dob.length === 0 ||
-      gender.length === 0
+      gender.length === 0 ||
+      !regex.test(dob)
     ) {
       const error1 = document.querySelector(".su-error-text");
       error1.style.visibility = "visible";
     } else {
-      //https://cse412project-server.onrender.com
       Axios.post("https://cse412project-server.onrender.com/register-user", {
         fName: fName,
         lName: lName,

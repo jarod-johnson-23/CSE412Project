@@ -2,4 +2,33 @@
   height: 75px;
   width: 100%;
   background-color: #bad4aa;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.navbar-body h1 {
+  color: #000;
+  margin-left: 15px;
+}
+
+.navbar-body .default-btn {
+  width: 150px;
+  height: 43px;
+  background-color: #fff;
+  border: 2px solid #e8871e;
+  color: #e8871e;
+  border-radius: 10px;
+  font-size: 18px;
+  font-weight: 600;
+  transition: 0.4s;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+  margin: 15px;
+}
+
+.navbar-body .default-btn:hover {
+  cursor: pointer;
+  background-color: #fff;
+  color: #e8871e;
+  scale: 1.06;
 }
