@@ -18,17 +18,37 @@ function Home() {
 
   return (
     <div className="home-body">
-      <h1>{cookies.userInfo.fName + cookies.userInfo.lName}</h1>
-      <button
-        className="default-btn"
-        onClick={(e) => {
-          removeUserCookie().then((response) => {
-            console.log("LOGGED OUT USER");
-          });
-        }}
-      >
-        Sign Out
-      </button>
+      <div className="profile-card">
+        <h2>{cookies.userInfo.fName + " " + cookies.userInfo.lName}</h2>
+        <p>Email: {cookies.userInfo.email}</p>
+        <p>Birthday: {cookies.userInfo.dob}</p>
+        <p>Hometown: {cookies.userInfo.hometown}</p>
+        <p>
+          Contribution:{" "}
+          <span className="big-number">{cookies.userInfo.contribution}</span>
+        </p>
+        <button
+          className="default-btn"
+          onClick={(e) => {
+            removeUserCookie().then((response) => {
+              console.log("LOGGED OUT USER");
+            });
+          }}
+        >
+          Sign Out
+        </button>
+      </div>
+      <div className="profile-body">
+        <div className="section friends-div">
+          <h2>Friend List</h2>
+        </div>
+        <div className="section suggestion-div">
+          <h2>Suggested Friends</h2>
+        </div>
+        <div className="section albums-div">
+          <h2>Owned Photo Albums</h2>
+        </div>
+      </div>
     </div>
   );
 }

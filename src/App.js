@@ -18,8 +18,8 @@ dark orange: #E8871E;
 function App() {
   return (
     <CookiesProvider>
-      <Navbar />
       <BrowserRouter>
+        <Navbar />
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/sign-up" element={<SignUp />} />

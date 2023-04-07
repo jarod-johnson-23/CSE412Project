@@ -1,7 +1,36 @@
 import "./Navbar.css";
+import { useEffect, useState } from "react";
+import { useCookies } from "react-cookie";
+import { useNavigate } from "react-router-dom";
 
 function Navbar() {
-  return <div className="navbar-body"></div>;
+  const navigate = useNavigate();
+  const [cookies, setCookie, removeCookie] = useCookies(["userInfo"]);
+  const [button, setButton] = useState("");
+
+  function removeUserCookie() {
+    const cookiePromise = new Promise((resolve, reject) => {
+      navigate("/");
+      resolve(removeCookie("userInfo", { path: "/" }));
+    });
+    return cookiePromise;
+  }
+
+  return (
+    <div className="navbar-body">
+      <h1>Facebook, but better</h1>
+      <button
+        className="default-btn"
+        onClick={(e) => {
+          removeUserCookie().then((response) => {
+            console.log("LOGGED OUT USER");
+          });
+        }}
+      >
+        Sign Out
+      </button>
+    </div>
+  );
 }
 
 export default Navbar;
