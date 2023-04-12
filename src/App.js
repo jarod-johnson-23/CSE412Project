@@ -4,6 +4,7 @@ import { useState } from "react";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import Home from "./pages/Home";
+import Album from "./pages/Album";
 import { CookiesProvider } from "react-cookie";
 import Navbar from "./Navbar";
 
@@ -24,6 +25,7 @@ function App() {
           <Route path="/" element={<Login />} />
           <Route path="/sign-up" element={<SignUp />} />
           <Route path="/home" element={<Home />} />
+          <Route path="/album/:aid" element={<Album />} />
         </Routes>
       </BrowserRouter>
     </CookiesProvider>

@@ -6,7 +6,7 @@ import { useCookies } from "react-cookie";
 
 function SignUp() {
   const navigate = useNavigate("");
-  const [cookies, setCookie, removeCookie] = useCookies(["userInfo"]);
+  const [cookies, setCookie] = useCookies(["userInfo"]);
   const [fName, set_fName] = useState("");
   const [lName, set_lName] = useState("");
   const [email, set_email] = useState("");

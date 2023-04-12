@@ -1,0 +1,127 @@
+.album-body {
+  padding: 25px;
+}
+
+.photo-list {
+  width: 100%;
+  min-height: 400px;
+  height: fit-content;
+  border: 2px solid #e8871e;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.photo-card {
+  margin: 10px;
+  min-width: 200px;
+  width: calc((100% / 3) - 20px);
+  min-width: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #ebf5df;
+  justify-content: space-between;
+  border-radius: 8px;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+  transition: 0.2s;
+}
+
+.photo-card img {
+  width: 100%;
+  border-radius: 8px 8px 0 0;
+  object-fit: cover;
+  height: 300px;
+}
+
+.photo-card:hover {
+  scale: 1.02;
+  cursor: pointer;
+}
+
+.photo-details {
+  width: 100%;
+  padding-left: 25px;
+}
+
+.photo-list-title {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.album-body .default-btn {
+  width: 150px;
+  height: 35px;
+  background-color: #edb45822;
+  border: 2px solid #e8871e;
+  color: #e8871e;
+  border-radius: 10px;
+  font-size: 18px;
+  font-weight: 600;
+  transition: 0.4s;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.album-body .default-btn:hover {
+  cursor: pointer;
+  background-color: #fff;
+  color: #e8871e;
+  scale: 1.06;
+}
+
+.popup {
+  display: none;
+  position: fixed;
+  z-index: 999;
+  background-color: #ebf5dfdd;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+
+.popup-content {
+  background-color: #fff;
+  position: absolute;
+  top: calc((100% / 2) - 150px);
+  left: calc((100% / 2) - 225px);
+  width: 450px;
+  height: 300px;
+  border: 2px solid #e8871e;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 10px;
+}
+
+.popup-top {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.album-body input {
+  width: 300px;
+  height: 20px;
+  margin-left: 10px;
+  padding: 10px;
+  border: 2px solid #edb458;
+  border-radius: 14px;
+  font-size: 20px;
+  transition: 0.2s;
+}
+
+.album-body input:focus {
+  outline: none;
+  border: 2.4px solid #e8871e;
+}
+
+.album-body input[type="file"] {
+  border: none;
+}
