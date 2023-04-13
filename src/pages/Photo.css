@@ -1,0 +1,19 @@
+.photo-body .default-btn {
+  width: 150px;
+  height: 35px;
+  background-color: #edb45822;
+  border: 2px solid #e8871e;
+  color: #e8871e;
+  border-radius: 10px;
+  font-size: 18px;
+  font-weight: 600;
+  transition: 0.4s;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.photo-body .default-btn:hover {
+  cursor: pointer;
+  background-color: #fff;
+  color: #e8871e;
+  scale: 1.06;
+}

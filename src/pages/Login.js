@@ -53,8 +53,8 @@ function Login() {
           className="text-input"
           placeholder="Email"
           value={email}
-          onChange={(e) => {
-            set_email(e.target.value);
+          onChange={(event) => {
+            set_email(event.target.value);
           }}
         />
         <input

@@ -51,6 +51,7 @@
   border: 2.4px solid #e8871e;
 }
 
+/* Default button class pt.1 */
 .sign-up-body .default-btn {
   width: 100%;
   height: 44px;
@@ -64,6 +65,7 @@
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
 }
 
+/* Default button class pt. 2 */
 .sign-up-body .default-btn:hover {
   cursor: pointer;
   background-color: #fff;

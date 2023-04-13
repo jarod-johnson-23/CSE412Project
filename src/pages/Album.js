@@ -3,7 +3,6 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Axios from "axios";
 import { useCookies } from "react-cookie";
-import axios from "axios";
 import FormData from "form-data";
 
 function Album() {
@@ -14,7 +13,6 @@ function Album() {
   const [imageFile, set_imageFile] = useState();
   let { aid } = useParams();
   let navigate = useNavigate();
-  let reader = new FileReader();
 
   let baseURL = "https://cse412project-server.onrender.com";
 

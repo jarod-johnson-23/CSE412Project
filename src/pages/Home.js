@@ -10,6 +10,7 @@ function Home() {
   const [albums, set_albums] = useState([]);
   const [albumName, set_albumName] = useState("");
 
+  //Base URL of the URL that holds all the APIs, just add the URI to complete the URL ex: /get-user
   let baseURL = "https://cse412project-server.onrender.com";
 
   const navigate = useNavigate();
@@ -25,6 +26,7 @@ function Home() {
   const getAlbums = async (uid) => {
     const date = Date.now();
     let currentDate = null;
+    //Very bad programming practice but makes sure the userInfo cookie is set before using its value in the API call
     do {
       currentDate = Date.now();
     } while (currentDate - date < 500);
@@ -36,8 +38,10 @@ function Home() {
   };
 
   const getFirstPic = (aid) => {
+    //GET requests cannot have a body, any parameters need to be added through the URL
     Axios.get(baseURL + "/get-first-pic/" + aid).then((response) => {
       if (response.data.length !== 0) {
+        //Code to display an image from the database
         var arrayBuff = new Uint8Array(response.data[0].data.data);
         var blob = new Blob([arrayBuff], { type: "image/jpg" });
         var urlCreate = window.URL || window.webkitURL;
@@ -45,12 +49,14 @@ function Home() {
         const img = document.getElementById(aid + "img");
         img.src = image;
       } else {
+        //If picture is not found, the album gets a placeholder image
         const img = document.getElementById(aid + "img");
         img.src = placeholder;
       }
     });
   };
 
+  //Function opens the popup
   const openPopup = () => {
     const popup = document.querySelector(".popup");
     const close = document.querySelector(".close");
@@ -66,6 +72,7 @@ function Home() {
       ownerID: cookies.userInfo.UID,
     }).then((response) => {
       if (response.data === "Success") {
+        //Also bad programming practice but refreshes the page so the new album is displayed
         window.location.reload(false);
       } else {
         console.log("Can't add album right now");
@@ -148,6 +155,8 @@ function Home() {
           </div>
 
           <div className="album-rows">
+            {/* Map function takes in an array of objects and returns a chunk of HTML for every object */}
+            {/* This one returns a "card" for each album that can be used to navigate to a specific album */}
             {albums.map((val, key) => {
               return (
                 <div
