@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 import placeholder from "./../img/placeholder.png";
+import trashcan from "./../img/trashcan.svg";
 import Axios from "axios";
 
 function Home() {
@@ -78,6 +79,19 @@ function Home() {
         console.log("Can't add album right now");
       }
     });
+  };
+
+  const deleteAlbum = (aid) => {
+    //Axios.delete(`${baseURL}/delete-album/${aid}`).then((response) => {
+    Axios.delete(`http://localhost:3307/delete-album/${aid}`).then(
+      (response) => {
+        set_albums((albums) =>
+          albums.filter((val) => {
+            return val.aid !== aid;
+          })
+        );
+      }
+    );
   };
 
   useEffect(() => {
@@ -159,16 +173,28 @@ function Home() {
             {/* This one returns a "card" for each album that can be used to navigate to a specific album */}
             {albums.map((val, key) => {
               return (
-                <div
-                  className="album-card"
-                  key={key}
-                  onClick={(e) => {
-                    navigate("/album/" + val.aid);
-                  }}
-                >
-                  <img src={getFirstPic(val.aid)} id={val.aid + "img"} />
+                <div className="album-card" key={key}>
+                  <img
+                    src={getFirstPic(val.aid)}
+                    id={val.aid + "img"}
+                    onClick={(e) => {
+                      navigate("/album/" + val.aid);
+                    }}
+                  />
                   <div className="album-card-stats">
-                    <h3>{val.name}</h3>
+                    <div className="album-card-stats-top">
+                      <h3>{val.name}</h3>
+                      <button
+                        className="default-btn"
+                        id="trash-btn"
+                        onClick={(e) => {
+                          deleteAlbum(val.aid);
+                        }}
+                      >
+                        <img src={trashcan} />
+                      </button>
+                    </div>
+
                     <p>{"Date created: " + val.doc.substring(0, 10)}</p>
                   </div>
                 </div>
