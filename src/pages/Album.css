@@ -125,3 +125,9 @@
 .album-body input[type="file"] {
   border: none;
 }
+
+.photo-details-bottom {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}

@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Axios from "axios";
 import { useCookies } from "react-cookie";
 import FormData from "form-data";
+import trashcan from "./../img/trashcan.svg";
 
 function Album() {
   const [cookies, removeCookie] = useCookies(["userInfo"]);
@@ -17,6 +18,8 @@ function Album() {
   let baseURL = "https://cse412project-server.onrender.com";
 
   const addPhoto = () => {
+    //Photo is too large to be passed normally in the body of the request
+    //Instead it is passed as form data and the request's headers are changed to allow form-data
     let data = new FormData();
     data.append("aid", aid);
     data.append("caption", photoCaption);
@@ -41,6 +44,19 @@ function Album() {
     close.addEventListener("click", () => {
       popup.style.display = "none";
     });
+  };
+
+  const deletePhoto = (pid) => {
+    //Axios.delete(`${baseURL}/delete-photo/${pid}`).then((response) => {
+    Axios.delete(`http://localhost:3307/delete-photo/${pid}`).then(
+      (response) => {
+        set_photos((photos) =>
+          photos.filter((val) => {
+            return val.pid !== pid;
+          })
+        );
+      }
+    );
   };
 
   useEffect(() => {
@@ -125,10 +141,27 @@ function Album() {
           var image = urlCreate.createObjectURL(blob);
           return (
             <div className="photo-card" key={key}>
-              <img src={image} id={val.pid} />
+              <img
+                src={image}
+                id={val.pid}
+                onClick={(e) => {
+                  navigate("/photo/" + val.pid);
+                }}
+              />
               <div className="photo-details">
                 <h3>{val.date.substring(0, 10)}</h3>
-                <p>{val.caption}</p>
+                <div className="photo-details-bottom">
+                  <p>{val.caption}</p>
+                  <button
+                    className="default-btn"
+                    id="trash-btn"
+                    onClick={(e) => {
+                      deletePhoto(val.pid);
+                    }}
+                  >
+                    <img src={trashcan} />
+                  </button>
+                </div>
               </div>
             </div>
           );
