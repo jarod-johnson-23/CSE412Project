@@ -10,9 +10,11 @@ function Home() {
   const [cookies, removeCookie] = useCookies(["userInfo"]);
   const [albums, set_albums] = useState([]);
   const [albumName, set_albumName] = useState("");
+  const [topUsers, set_topUsers] = useState([]);
 
   //Base URL of the URL that holds all the APIs, just add the URI to complete the URL ex: /get-user
-  let baseURL = "https://cse412project-server.onrender.com";
+  //let baseURL = "https://cse412project-server.onrender.com";
+  let baseURL = "http://localhost:3307";
 
   const navigate = useNavigate();
 
@@ -83,44 +85,60 @@ function Home() {
 
   const deleteAlbum = (aid) => {
     //Axios.delete(`${baseURL}/delete-album/${aid}`).then((response) => {
-    Axios.delete(`http://localhost:3307/delete-album/${aid}`).then(
-      (response) => {
-        set_albums((albums) =>
-          albums.filter((val) => {
-            return val.aid !== aid;
-          })
-        );
-      }
-    );
+    Axios.delete(`${baseURL}/delete-album/${aid}`).then((response) => {
+      set_albums((albums) =>
+        albums.filter((val) => {
+          return val.aid !== aid;
+        })
+      );
+    });
+  };
+
+  const getTopUsers = () => {
+    Axios.get(baseURL + "/get-top-users").then((response) => {
+      set_topUsers(response.data);
+    });
   };
 
   useEffect(() => {
     window.scrollTo(0, 0);
     getAlbums();
+    getTopUsers();
   }, []);
 
   return (
     <div className="home-body">
-      <div className="profile-card">
-        <h2>{cookies.userInfo.fName + " " + cookies.userInfo.lName}</h2>
-        <p>Email: {cookies.userInfo.email}</p>
-        <p>Birthday: {cookies.userInfo.dob}</p>
-        <p>Hometown: {cookies.userInfo.hometown}</p>
-        <p>
-          Contribution:{" "}
-          <span className="big-number">{cookies.userInfo.contribution}</span>
-        </p>
-        <button
-          className="default-btn"
-          onClick={(e) => {
-            removeUserCookie().then((response) => {
-              console.log("LOGGED OUT USER");
-            });
-          }}
-        >
-          Sign Out
-        </button>
+      <div className="left-side">
+        <div className="profile-card">
+          <h2>{cookies.userInfo.fName + " " + cookies.userInfo.lName}</h2>
+          <p>Email: {cookies.userInfo.email}</p>
+          <p>Birthday: {cookies.userInfo.dob}</p>
+          <p>Hometown: {cookies.userInfo.hometown}</p>
+          <p>
+            Contribution:{" "}
+            <span className="big-number">{cookies.userInfo.contribution}</span>
+          </p>
+          <button
+            className="default-btn"
+            onClick={(e) => {
+              removeUserCookie().then((response) => {
+                console.log("LOGGED OUT USER");
+              });
+            }}
+          >
+            Sign Out
+          </button>
+        </div>
+        <div className="top-user-card">
+          <h2>Top Users:</h2>
+          {topUsers.map((val, key) => {
+            return (
+              <p>{val.fName + " " + val.lName + " - " + val.contribution}</p>
+            );
+          })}
+        </div>
       </div>
+
       <div className="profile-body">
         <div className="section friends-div">
           <h2>Friend List</h2>

@@ -11,6 +11,7 @@ function Photo() {
   const [comments, set_comments] = useState([]);
   const [date, set_date] = useState("");
   const [comment_text, set_comment_text] = useState("");
+  const [usernames, set_usernames] = useState([]);
   const [cookies, setCookie, removeCookie] = useCookies(["userInfo"]);
   //pid is the value that is passed in by the URL
   let { pid } = useParams();
@@ -18,7 +19,8 @@ function Photo() {
 
   var arrayBuff, blob, urlCreate, image;
 
-  const baseURL = "https://cse412project-server.onrender.com";
+  //let baseURL = "https://cse412project-server.onrender.com";
+  let baseURL = "http://localhost:3307";
 
   const getPhoto = () => {
     //get photo and save response.data[0] to photo array
@@ -85,12 +87,19 @@ function Photo() {
     });
   };
 
+  const getUsernames = () => {
+    Axios.get(baseURL + "/get-users-who-liked/" + pid).then((response) => {
+      set_usernames(response.data);
+    });
+  };
+
   //All this code is run on page load
   useEffect(() => {
     window.scrollTo(0, 0);
     getPhoto();
     getComments();
     getLikes();
+    getUsernames();
   }, []);
 
   return (
@@ -119,6 +128,12 @@ function Photo() {
           >
             <img src={thumbsUp} />
           </button>
+          <div className="users-who-liked">
+            <p>Users who liked this photo: </p>
+            {usernames.map((val, key) => {
+              return <p key={key}>{" " + val.fName + " " + val.lName}</p>;
+            })}
+          </div>
         </div>
       </div>
       <div className="comments-header">
