@@ -131,3 +131,14 @@
   flex-direction: row;
   align-items: center;
 }
+
+.album-photo-body {
+  display: flex;
+  flex-direction: row;
+  row-gap: 25px;
+  width: 100%;
+}
+
+.tag-details {
+  margin-right: 25px;
+}
