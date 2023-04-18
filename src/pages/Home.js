@@ -13,8 +13,8 @@ function Home() {
   const [topUsers, set_topUsers] = useState([]);
 
   //Base URL of the URL that holds all the APIs, just add the URI to complete the URL ex: /get-user
-  //let baseURL = "https://cse412project-server.onrender.com";
-  let baseURL = "http://localhost:3307";
+  let baseURL = "https://cse412project-server.onrender.com";
+  //let baseURL = "http://localhost:3307";
 
   const navigate = useNavigate();
 

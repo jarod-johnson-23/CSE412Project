@@ -19,8 +19,8 @@ function Photo() {
 
   var arrayBuff, blob, urlCreate, image;
 
-  //let baseURL = "https://cse412project-server.onrender.com";
-  let baseURL = "http://localhost:3307";
+  let baseURL = "https://cse412project-server.onrender.com";
+  //let baseURL = "http://localhost:3307";
 
   const getPhoto = () => {
     //get photo and save response.data[0] to photo array
