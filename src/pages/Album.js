@@ -7,15 +7,18 @@ import FormData from "form-data";
 import trashcan from "./../img/trashcan.svg";
 
 function Album() {
-  const [cookies, removeCookie] = useCookies(["userInfo"]);
+  const [cookies, setCookie, removeCookie] = useCookies(["userInfo"]);
   const [album, set_album] = useState([]);
   const [photos, set_photos] = useState([]);
   const [photoCaption, set_photoCaption] = useState("");
+  const [tags, set_tags] = useState("");
   const [imageFile, set_imageFile] = useState();
+  const [tagList, set_tagList] = useState([]);
   let { aid } = useParams();
   let navigate = useNavigate();
 
   let baseURL = "https://cse412project-server.onrender.com";
+  //let baseURL = "http://localhost:3307";
 
   const addPhoto = () => {
     //Photo is too large to be passed normally in the body of the request
@@ -23,6 +26,7 @@ function Album() {
     let data = new FormData();
     data.append("aid", aid);
     data.append("caption", photoCaption);
+    data.append("tags", tags);
     data.append("file", imageFile, imageFile.name);
     Axios.post(baseURL + "/add-photo", data, {
       headers: {
@@ -32,6 +36,16 @@ function Album() {
       },
     }).then((response) => {
       if (response.data === "Success") {
+        Axios.post(baseURL + "/set-contribution", {
+          contribution: cookies.userInfo.contribution + 1,
+          UID: cookies.userInfo.UID,
+        }).then((response) => {
+          var user = cookies.userInfo;
+          user.contribution = user.contribution + 1;
+          setCookie("userInfo", JSON.stringify(user), {
+            path: "/",
+          });
+        });
         window.location.reload(false);
       }
     });
@@ -47,24 +61,29 @@ function Album() {
   };
 
   const deletePhoto = (pid) => {
-    //Axios.delete(`${baseURL}/delete-photo/${pid}`).then((response) => {
-    Axios.delete(`http://localhost:3307/delete-photo/${pid}`).then(
-      (response) => {
-        set_photos((photos) =>
-          photos.filter((val) => {
-            return val.pid !== pid;
-          })
-        );
-      }
-    );
+    Axios.delete(`${baseURL}/delete-photo/${pid}`).then((response) => {
+      set_photos((photos) =>
+        photos.filter((val) => {
+          return val.pid !== pid;
+        })
+      );
+    });
   };
 
   useEffect(() => {
-    Axios.get(baseURL + "/get-album/" + aid).then((response) => {
-      set_album(response.data[0]);
-    });
-    Axios.get(baseURL + "/get-photos-from-album/" + aid).then((response) => {
-      set_photos(response.data);
+    Axios.get(baseURL + "/get-album/" + aid)
+      .then((response) => {
+        set_album(response.data[0]);
+      })
+      .finally((e) => {
+        Axios.get(baseURL + "/get-photos-from-album/" + aid)
+          .then((response1) => {
+            set_photos(response1.data);
+          })
+          .finally((e) => {});
+      });
+    Axios.get(baseURL + "/get-tags").then((response2) => {
+      set_tagList(response2.data);
     });
   }, []);
 
@@ -113,6 +132,15 @@ function Album() {
             }}
           />
           <input
+            type="text"
+            className="text-field"
+            placeholder="Separate Tags by ','"
+            value={tags}
+            onChange={(e) => {
+              set_tags(e.target.value);
+            }}
+          />
+          <input
             type="file"
             id="image-input"
             name="image-input"
@@ -148,19 +176,31 @@ function Album() {
                   navigate("/photo/" + val.pid);
                 }}
               />
-              <div className="photo-details">
-                <h3>{val.date.substring(0, 10)}</h3>
-                <div className="photo-details-bottom">
-                  <p>{val.caption}</p>
-                  <button
-                    className="default-btn"
-                    id="trash-btn"
-                    onClick={(e) => {
-                      deletePhoto(val.pid);
-                    }}
-                  >
-                    <img src={trashcan} />
-                  </button>
+              <div className="album-photo-body">
+                <div className="photo-details">
+                  <h3>{val.date.substring(0, 10)}</h3>
+                  <div className="photo-details-bottom">
+                    <p>{val.caption}</p>
+                    <button
+                      className="default-btn"
+                      id="trash-btn"
+                      onClick={(e) => {
+                        deletePhoto(val.pid);
+                      }}
+                    >
+                      <img src={trashcan} />
+                    </button>
+                  </div>
+                </div>
+                <div className="tag-details">
+                  <p>Tags:</p>
+                  {tagList
+                    .filter((tag, key) => tag.pid === val.pid)
+                    .map((correctTag) => (
+                      <p key={correctTag.name + correctTag.pid}>
+                        {correctTag.name}
+                      </p>
+                    ))}
                 </div>
               </div>
             </div>

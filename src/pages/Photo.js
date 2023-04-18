@@ -11,7 +11,7 @@ function Photo() {
   const [comments, set_comments] = useState([]);
   const [date, set_date] = useState("");
   const [comment_text, set_comment_text] = useState("");
-  const [cookies, removeCookie] = useCookies(["userInfo"]);
+  const [cookies, setCookie, removeCookie] = useCookies(["userInfo"]);
   //pid is the value that is passed in by the URL
   let { pid } = useParams();
   let navigate = useNavigate();
@@ -48,7 +48,6 @@ function Photo() {
     //get comments and save response.data to comments array
     Axios.get(baseURL + "/get-comments/" + pid).then((response) => {
       set_comments(response.data);
-      console.log(response.data);
     });
   };
 
@@ -72,7 +71,17 @@ function Photo() {
       pid: pid,
       text: comment_text,
     }).then((response) => {
-      window.location.reload(false);
+      Axios.post(baseURL + "/set-contribution", {
+        contribution: cookies.userInfo.contribution + 1,
+        UID: cookies.userInfo.UID,
+      }).then((response) => {
+        var user = cookies.userInfo;
+        user.contribution = user.contribution + 1;
+        setCookie("userInfo", JSON.stringify(user), {
+          path: "/",
+        });
+        window.location.reload(false);
+      });
     });
   };
 
