@@ -12,7 +12,10 @@ function Home() {
   const [albumName, set_albumName] = useState("");
   const [topUsers, set_topUsers] = useState([]);
   const [userName, set_friendship] = useState([]); //EC added
-  const [searchUID, set_search_uid] = useState(0);
+  const [searchUID, set_search_uid] = useState(0); // BB added
+  const [suggestedFriends, set_suggested_friends] = useState([]); // BB added
+  const [suggestedPhotos, set_suggested_photos] = useState([]); // BB added
+
 
 
   //Base URL of the URL that holds all the APIs, just add the URI to complete the URL ex: /get-user
@@ -103,22 +106,6 @@ function Home() {
     });
   };
 
-  //EC added
-  /*const createFriend = () => {
-    Axios.post(baseURL + "/add-friend", {
-      name: userName,
-      ownerID: cookies.userInfo.UID,
-    }).then((response) => {
-      if (response.data != ownerID) {
-
-        //Also bad programming practice but refreshes the page so the new album is displayed
-        window.location.reload(false);
-      } else {
-        console.log("Failed to add");
-      }
-    });
-  };*/
-
   const getFriends = async (uid) => {
     const date = Date.now();
     let currentDate = null;
@@ -133,11 +120,42 @@ function Home() {
     );
   };
 
+  const getSuggestedFriends = async (uid) => {
+    const date = Date.now();
+    let currentDate = null;
+    //Very bad programming practice but makes sure the userInfo cookie is set before using its value in the API call
+    do {
+      currentDate = Date.now();
+    } while (currentDate - date < 500);
+    Axios.get(baseURL + "/get-recommended-friends/" + cookies.userInfo.UID).then(
+      (response) => {
+        set_suggested_friends(response.data);
+      }
+    );
+  };
+
+
+  const getSuggestedPhotos = async (uid) => {
+    const date = Date.now();
+    let currentDate = null;
+    //Very bad programming practice but makes sure the userInfo cookie is set before using its value in the API call
+    do {
+      currentDate = Date.now();
+    } while (currentDate - date < 500);
+    Axios.get(baseURL + "/get-recommended-photos/" + cookies.userInfo.UID).then(
+      (response) => {
+        set_suggested_photos(response.data);
+      }
+    );
+  };
+
   useEffect(() => {
     window.scrollTo(0, 0);
     getAlbums();
     getTopUsers();
     getFriends();
+    getSuggestedFriends();
+    getSuggestedPhotos();
   }, []);
 
   return (
@@ -202,6 +220,18 @@ function Home() {
         </div>
         <div className="section suggestion-div">
           <h2>Suggested Friends</h2>
+          {suggestedFriends.map((val, key) => {
+
+            return <>
+
+              <div className="suggested-friend-card">
+                <h3> {val.fName + "\n" + val.lName} </ h3>
+              </ div>
+
+            </>
+
+          })}
+
         </div>
         <div className="section albums-div">
           <div className="album-div-top">
@@ -277,7 +307,11 @@ function Home() {
             })}
           </div>
         </div>
+
+        
       </div>
+
+
     </div>
   );
 }
