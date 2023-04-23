@@ -41,6 +41,7 @@ function App() {
           <Route path="/album/:aid" element={<Album />} />
           <Route path="/photo/:pid" element={<Photo />} />
           <Route path="/comment-search" element={<Comments />} />
+          <Route path="/other-user/:uid" element={<Photo />} />
         </Routes>
       </BrowserRouter>
     </CookiesProvider>

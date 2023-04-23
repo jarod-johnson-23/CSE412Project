@@ -1,4 +1,4 @@
-import "./Home.css";
+import "./OtherUser.css";
 import { useState, useEffect } from "react";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
@@ -13,10 +13,13 @@ function Home() {
   const [topUsers, set_topUsers] = useState([]);
   const [userName, set_friendship] = useState([]); //EC added
   const [searchUID, set_search_uid] = useState(0);
+  const [userInformation, set_user_info] = useState([]);
 
   //Base URL of the URL that holds all the APIs, just add the URI to complete the URL ex: /get-user
   let baseURL = "https://cse412project-server.onrender.com";
   //let baseURL = "http://localhost:3307";
+
+  const userId = 10001;
 
   const navigate = useNavigate();
 
@@ -36,7 +39,7 @@ function Home() {
       currentDate = Date.now();
     } while (currentDate - date < 500);
     Axios.post(baseURL + "/get-personal-albums", {
-      uid: cookies.userInfo.UID,
+      uid: userId,
     }).then((response) => {
       set_albums(response.data);
     });
@@ -74,7 +77,7 @@ function Home() {
   const createAlbum = () => {
     Axios.post(baseURL + "/add-album", {
       name: albumName,
-      ownerID: cookies.userInfo.UID,
+      ownerID: userId,
     }).then((response) => {
       if (response.data === "Success") {
         //Also bad programming practice but refreshes the page so the new album is displayed
@@ -125,11 +128,21 @@ function Home() {
     do {
       currentDate = Date.now();
     } while (currentDate - date < 500);
-    Axios.get(baseURL + "/get-friends/" + cookies.userInfo.UID).then(
-      (response) => {
-        set_friendship(response.data);
-      }
-    );
+    Axios.get(baseURL + "/get-user-info/" + userId).then((response) => {
+      set_user_info(response.data);
+    });
+  };
+
+  const getUserInfo = async (uid) => {
+    const date = Date.now();
+    let currentDate = null;
+    //Very bad programming practice but makes sure the userInfo cookie is set before using its value in the API call
+    do {
+      currentDate = Date.now();
+    } while (currentDate - date < 500);
+    Axios.get(baseURL + "/get-friends/" + userId).then((response) => {
+      set_friendship(response.data);
+    });
   };
 
   useEffect(() => {
@@ -159,7 +172,7 @@ function Home() {
               });
             }}
           >
-            Sign Out
+            Add Friend
           </button>
         </div>
 
@@ -174,7 +187,8 @@ function Home() {
       </div>
 
       <div className="profile-body">
-        <div class="topnav">
+        {/* <div class="topnav">
+        
           <a href="#addfriend">Search UserID</a>
           <input
             type="text"
@@ -193,7 +207,8 @@ function Home() {
           >
             Search
           </button>
-        </div>
+        </div>*/}
+
         <div className="section friends-div">
           <h2>Friend List</h2>
           <div class="scroll">
@@ -241,14 +256,14 @@ function Home() {
                     set_albumName(e.target.value);
                   }}
                 />
-                <button
+                {/* <button
                   className="default-btn close"
                   onClick={(e) => {
                     createAlbum();
                   }}
                 >
                   Create
-                </button>
+                </button> */}
               </div>
             </div>
           </div>
@@ -269,7 +284,7 @@ function Home() {
                   <div className="album-card-stats">
                     <div className="album-card-stats-top">
                       <h3>{val.name}</h3>
-                      <button
+                      {/* <button
                         className="default-btn"
                         id="trash-btn"
                         onClick={(e) => {
@@ -277,7 +292,7 @@ function Home() {
                         }}
                       >
                         <img src={trashcan} />
-                      </button>
+                      </button> */}
                     </div>
 
                     <p>{"Date created: " + val.doc.substring(0, 10)}</p>
@@ -292,4 +307,4 @@ function Home() {
   );
 }
 
-export default Home;
+export default OtherUsers;
