@@ -207,6 +207,7 @@ function Home() {
           />
           <button
             onClick={() => {
+              navigate("/other-user/" + searchUID);
               // use searchUID
               // have to check that the user id exists
               // go to the users home page via uid

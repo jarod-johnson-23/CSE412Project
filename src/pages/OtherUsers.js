@@ -13,7 +13,7 @@ function OtherUsers() {
   const [topUsers, set_topUsers] = useState([]);
   const [userName, set_friendship] = useState([]); //EC added
   const [searchUID, set_search_uid] = useState(0);
-  const [userInformation, set_user_info] = useState([]);
+  const [userInformation, set_user_info] = useState([""]);
 
   //Base URL of the URL that holds all the APIs, just add the URI to complete the URL ex: /get-user
   let baseURL = "https://cse412project-server.onrender.com";
@@ -105,22 +105,6 @@ function OtherUsers() {
     });
   };
 
-  //EC added
-  /*const createFriend = () => {
-    Axios.post(baseURL + "/add-friend", {
-      name: userName,
-      ownerID: cookies.userInfo.UID,
-    }).then((response) => {
-      if (response.data != ownerID) {
-
-        //Also bad programming practice but refreshes the page so the new album is displayed
-        window.location.reload(false);
-      } else {
-        console.log("Failed to add");
-      }
-    });
-  };*/
-
   const getFriends = async (uid) => {
     const date = Date.now();
     let currentDate = null;
@@ -142,13 +126,10 @@ function OtherUsers() {
     } while (currentDate - date < 500);
     Axios.get(baseURL + "/get-user-info/" + userId).then((response) => {
       set_user_info(response.data);
-      //console.log(JSON.parse(response.data));
-      //console.log(JSON.parse(response.data).email);
     });
   };
 
   useEffect(() => {
-    console.log(window.URL);
     window.scrollTo(0, 0);
     getAlbums();
     getTopUsers();
@@ -173,9 +154,6 @@ function OtherUsers() {
           <button
             className="default-btn"
             onClick={(e) => {
-              removeUserCookie().then((response) => {
-                console.log("LOGGED OUT USER");
-              });
             }}
           >
             Add Friend
