@@ -140,6 +140,14 @@ function OtherUsers() {
   return (
     <div className="home-body">
       <div className="left-side">
+        <button
+          className="default-btn go-back"
+          onClick={(e) => {
+            navigate(-1);
+          }}
+        >
+          Go Back
+        </button>
         <div className="profile-card">
           <h2>{userInformation[0].fName + " " + userInformation[0].lName}</h2>
           <p>Email: {userInformation[0].email}</p>
@@ -151,11 +159,7 @@ function OtherUsers() {
               {userInformation[0].contribution}
             </span>
           </p>
-          <button
-            className="default-btn"
-            onClick={(e) => {
-            }}
-          >
+          <button className="default-btn" onClick={(e) => {}}>
             Add Friend
           </button>
         </div>
