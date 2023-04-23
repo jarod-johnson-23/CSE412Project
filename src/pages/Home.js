@@ -127,7 +127,8 @@ function Home() {
     do {
       currentDate = Date.now();
     } while (currentDate - date < 500);
-    Axios.get(baseURL + "/get-recommended-friends/" + cookies.userInfo.UID).then(
+    console.log("Getting RF");
+    Axios.get(baseURL + "/get-suggested-friends/" + cookies.userInfo.UID).then(
       (response) => {
         set_suggested_friends(response.data);
       }
@@ -142,7 +143,9 @@ function Home() {
     do {
       currentDate = Date.now();
     } while (currentDate - date < 500);
-    Axios.get(baseURL + "/get-recommended-photos/" + cookies.userInfo.UID).then(
+    console.log("Getting RP");
+
+    Axios.get(baseURL + "/get-suggested-photos/" + cookies.userInfo.UID).then(
       (response) => {
         set_suggested_photos(response.data);
       }
@@ -307,11 +310,20 @@ function Home() {
             })}
           </div>
         </div>
+        <div className="section suggested-photos-div">
+        <h2>Recommended Photos</h2>
 
-        
+            {suggestedPhotos.map((val, key) => {
+              return<>
+              <div className="suggested-friend-card" key={key}>
+                <p>{val.caption}</p>
+              </div>
+              </>
+            })}
+
+        </div>
+
       </div>
-
-
     </div>
   );
 }
