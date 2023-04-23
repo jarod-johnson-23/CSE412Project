@@ -190,7 +190,15 @@ function Home() {
           <h2>Friend List</h2>
           <div class="scroll">
             {userName.map((val, key) => {
-              return <p>{val.fName + " " + val.lName}</p>;
+              return (
+                <p>
+                  {val.fName +
+                    " " +
+                    val.lName +
+                    "\t since " +
+                    val.since.substring(0, 10)}
+                </p>
+              );
             })}
           </div>
         </div>
