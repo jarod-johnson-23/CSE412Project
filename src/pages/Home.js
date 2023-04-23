@@ -183,7 +183,7 @@ function Home() {
             val={searchUID}
 
             onChange={(e) => {
-              set_search_term(e.target.value);
+              set_search_uid(e.target.value);
             }}
           />
           <button onClick={() => {
@@ -196,7 +196,7 @@ function Home() {
           <h2>Friend List</h2>
           <div class="scroll">
             {userName.map((val, key) => {
-              return <p>{val.fName + " " + val.lName}</p>;
+              return <p>{val.fName + " " + val.lName + " Since: " + val.since.substring(0, 10)}</p>;
             })}
           </div>
         </div>
