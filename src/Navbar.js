@@ -24,6 +24,13 @@ function Navbar() {
       <button
         className="default-btn"
         onClick={(e) => {
+          navigate("/comment-search");
+        }}
+        >Comment Search
+        </button>
+      <button
+        className="default-btn"
+        onClick={(e) => {
           removeUserCookie().then((response) => {
             console.log("LOGGED OUT USER");
           });
