@@ -12,6 +12,8 @@ function Home() {
   const [albumName, set_albumName] = useState("");
   const [topUsers, set_topUsers] = useState([]);
   const [userName, set_friendship] = useState([]); //EC added
+  const [searchUID, set_search_uid] = useState(0);
+
 
   //Base URL of the URL that holds all the APIs, just add the URI to complete the URL ex: /get-user
   let baseURL = "https://cse412project-server.onrender.com";
@@ -178,27 +180,23 @@ function Home() {
           <input
             type="text"
             placeholder="Search.."
-            /*value={userName}
+            val={searchUID}
+
             onChange={(e) => {
-              error1.style.visibility = "hidden";
-              set_friendship(e.target.value);
-            }}*/
+              set_search_term(e.target.value);
+            }}
           />
-          <button type="submit">Submit</button>
+          <button onClick={() => {
+            // use searchUID
+            // have to check that the user id exists
+            // go to the users home page via uid
+          }}>Search</button>
         </div>
         <div className="section friends-div">
           <h2>Friend List</h2>
           <div class="scroll">
             {userName.map((val, key) => {
-              return (
-                <p>
-                  {val.fName +
-                    " " +
-                    val.lName +
-                    "\t since " +
-                    val.since.substring(0, 10)}
-                </p>
-              );
+              return <p>{val.fName + " " + val.lName}</p>;
             })}
           </div>
         </div>
@@ -220,7 +218,7 @@ function Home() {
               <div className="popup-content">
                 <div className="popup-top">
                   <h2>Create a new Album</h2>
-                  <button className="default-btn close" onClick={(e) => {}}>
+                  <button className="default-btn close" onClick={(e) => { }}>
                     Close
                   </button>
                 </div>
