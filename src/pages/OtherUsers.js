@@ -1,4 +1,4 @@
-import "./OtherUser.css";
+import "./OtherUsers.css";
 import { useState, useEffect } from "react";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
@@ -6,7 +6,7 @@ import placeholder from "./../img/placeholder.png";
 import trashcan from "./../img/trashcan.svg";
 import Axios from "axios";
 
-function Home() {
+function OtherUsers() {
   const [cookies, removeCookie] = useCookies(["userInfo"]);
   const [albums, set_albums] = useState([]);
   const [albumName, set_albumName] = useState("");
@@ -128,8 +128,8 @@ function Home() {
     do {
       currentDate = Date.now();
     } while (currentDate - date < 500);
-    Axios.get(baseURL + "/get-user-info/" + userId).then((response) => {
-      set_user_info(response.data);
+    Axios.get(baseURL + "/get-friends/" + userId).then((response) => {
+      set_friendship(response.data);
     });
   };
 
@@ -140,29 +140,35 @@ function Home() {
     do {
       currentDate = Date.now();
     } while (currentDate - date < 500);
-    Axios.get(baseURL + "/get-friends/" + userId).then((response) => {
-      set_friendship(response.data);
+    Axios.get(baseURL + "/get-user-info/" + userId).then((response) => {
+      set_user_info(response.data);
+      //console.log(JSON.parse(response.data));
+      //console.log(JSON.parse(response.data).email);
     });
   };
 
   useEffect(() => {
+    console.log(window.URL);
     window.scrollTo(0, 0);
     getAlbums();
     getTopUsers();
     getFriends();
+    getUserInfo();
   }, []);
 
   return (
     <div className="home-body">
       <div className="left-side">
         <div className="profile-card">
-          <h2>{cookies.userInfo.fName + " " + cookies.userInfo.lName}</h2>
-          <p>Email: {cookies.userInfo.email}</p>
-          <p>Birthday: {cookies.userInfo.dob}</p>
-          <p>Hometown: {cookies.userInfo.hometown}</p>
+          <h2>{userInformation[0].fName + " " + userInformation[0].lName}</h2>
+          <p>Email: {userInformation[0].email}</p>
+          <p>Birthday: {userInformation[0].dob}</p>
+          <p>Hometown: {userInformation[0].hometown}</p>
           <p>
             Contribution:{" "}
-            <span className="big-number">{cookies.userInfo.contribution}</span>
+            <span className="big-number">
+              {userInformation[0].contribution}
+            </span>
           </p>
           <button
             className="default-btn"
