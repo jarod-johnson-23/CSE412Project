@@ -124,7 +124,7 @@ function Home() {
     do {
       currentDate = Date.now();
     } while (currentDate - date < 500);
-    Axios.get(baseURL + "/get-friends/:uid" + cookies.userInfo.UID).then(
+    Axios.get(baseURL + "/get-friends/" + cookies.userInfo.UID).then(
       (response) => {
         set_friendship(response.data);
       }
