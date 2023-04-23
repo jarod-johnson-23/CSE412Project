@@ -11,6 +11,7 @@ function Home() {
   const [albums, set_albums] = useState([]);
   const [albumName, set_albumName] = useState("");
   const [topUsers, set_topUsers] = useState([]);
+  const [userName, set_friendship] = useState([]); //EC added
 
   //Base URL of the URL that holds all the APIs, just add the URI to complete the URL ex: /get-user
   let baseURL = "https://cse412project-server.onrender.com";
@@ -100,10 +101,41 @@ function Home() {
     });
   };
 
+  //EC added
+  /*const createFriend = () => {
+    Axios.post(baseURL + "/add-friend", {
+      name: userName,
+      ownerID: cookies.userInfo.UID,
+    }).then((response) => {
+      if (response.data != ownerID) {
+
+        //Also bad programming practice but refreshes the page so the new album is displayed
+        window.location.reload(false);
+      } else {
+        console.log("Failed to add");
+      }
+    });
+  };*/
+
+  const getFriends = async (uid) => {
+    const date = Date.now();
+    let currentDate = null;
+    //Very bad programming practice but makes sure the userInfo cookie is set before using its value in the API call
+    do {
+      currentDate = Date.now();
+    } while (currentDate - date < 500);
+    Axios.get(baseURL + "/get-friends/:uid" + cookies.userInfo.UID).then(
+      (response) => {
+        set_friendship(response.data);
+      }
+    );
+  };
+
   useEffect(() => {
     window.scrollTo(0, 0);
     getAlbums();
     getTopUsers();
+    getFriends();
   }, []);
 
   return (
@@ -129,6 +161,7 @@ function Home() {
             Sign Out
           </button>
         </div>
+
         <div className="top-user-card">
           <h2>Top Users:</h2>
           {topUsers.map((val, key) => {
@@ -140,8 +173,26 @@ function Home() {
       </div>
 
       <div className="profile-body">
+        <div class="topnav">
+          <a href="#addfriend">Search UserID</a>
+          <input
+            type="text"
+            placeholder="Search.."
+            /*value={userName}
+            onChange={(e) => {
+              error1.style.visibility = "hidden";
+              set_friendship(e.target.value);
+            }}*/
+          />
+          <button type="submit">Submit</button>
+        </div>
         <div className="section friends-div">
           <h2>Friend List</h2>
+          <div class="scroll">
+            {userName.map((val, key) => {
+              return <p>{val.fName + " " + val.lName}</p>;
+            })}
+          </div>
         </div>
         <div className="section suggestion-div">
           <h2>Suggested Friends</h2>
