@@ -1,4 +1,4 @@
-import "./Home.css";
+import "./OtherUsers.css";
 import { useState, useEffect } from "react";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
@@ -6,20 +6,20 @@ import placeholder from "./../img/placeholder.png";
 import trashcan from "./../img/trashcan.svg";
 import Axios from "axios";
 
-function Home() {
+function OtherUsers() {
   const [cookies, removeCookie] = useCookies(["userInfo"]);
   const [albums, set_albums] = useState([]);
   const [albumName, set_albumName] = useState("");
   const [topUsers, set_topUsers] = useState([]);
   const [userName, set_friendship] = useState([]); //EC added
-  const [searchUID, set_search_uid] = useState(0); // BB added
-  const [suggestedFriends, set_suggested_friends] = useState([]); // BB added
-  const [suggestedPhotos, set_suggested_photos] = useState([]); // BB added
-
+  const [searchUID, set_search_uid] = useState(0);
+  const [userInformation, set_user_info] = useState([]);
 
   //Base URL of the URL that holds all the APIs, just add the URI to complete the URL ex: /get-user
   let baseURL = "https://cse412project-server.onrender.com";
   //let baseURL = "http://localhost:3307";
+
+  const userId = 10001;
 
   const navigate = useNavigate();
 
@@ -39,7 +39,7 @@ function Home() {
       currentDate = Date.now();
     } while (currentDate - date < 500);
     Axios.post(baseURL + "/get-personal-albums", {
-      uid: cookies.userInfo.UID,
+      uid: userId,
     }).then((response) => {
       set_albums(response.data);
     });
@@ -77,7 +77,7 @@ function Home() {
   const createAlbum = () => {
     Axios.post(baseURL + "/add-album", {
       name: albumName,
-      ownerID: cookies.userInfo.UID,
+      ownerID: userId,
     }).then((response) => {
       if (response.data === "Success") {
         //Also bad programming practice but refreshes the page so the new album is displayed
@@ -105,6 +105,22 @@ function Home() {
     });
   };
 
+  //EC added
+  /*const createFriend = () => {
+    Axios.post(baseURL + "/add-friend", {
+      name: userName,
+      ownerID: cookies.userInfo.UID,
+    }).then((response) => {
+      if (response.data != ownerID) {
+
+        //Also bad programming practice but refreshes the page so the new album is displayed
+        window.location.reload(false);
+      } else {
+        console.log("Failed to add");
+      }
+    });
+  };*/
+
   const getFriends = async (uid) => {
     const date = Date.now();
     let currentDate = null;
@@ -112,65 +128,47 @@ function Home() {
     do {
       currentDate = Date.now();
     } while (currentDate - date < 500);
-    Axios.get(baseURL + "/get-friends/" + cookies.userInfo.UID).then(
-      (response) => {
-        set_friendship(response.data);
-      }
-    );
+    Axios.get(baseURL + "/get-friends/" + userId).then((response) => {
+      set_friendship(response.data);
+    });
   };
 
-  const getSuggestedFriends = async (uid) => {
+  const getUserInfo = async (uid) => {
     const date = Date.now();
     let currentDate = null;
     //Very bad programming practice but makes sure the userInfo cookie is set before using its value in the API call
     do {
       currentDate = Date.now();
     } while (currentDate - date < 500);
-    console.log("Getting RF");
-    Axios.get(baseURL + "/get-suggested-friends/" + cookies.userInfo.UID).then(
-      (response) => {
-        set_suggested_friends(response.data);
-      }
-    );
-  };
-
-
-  const getSuggestedPhotos = async (uid) => {
-    const date = Date.now();
-    let currentDate = null;
-    //Very bad programming practice but makes sure the userInfo cookie is set before using its value in the API call
-    do {
-      currentDate = Date.now();
-    } while (currentDate - date < 500);
-    console.log("Getting RP");
-
-    Axios.get(baseURL + "/get-suggested-photos/" + cookies.userInfo.UID).then(
-      (response) => {
-        set_suggested_photos(response.data);
-      }
-    );
+    Axios.get(baseURL + "/get-user-info/" + userId).then((response) => {
+      set_user_info(response.data);
+      //console.log(JSON.parse(response.data));
+      //console.log(JSON.parse(response.data).email);
+    });
   };
 
   useEffect(() => {
+    console.log(window.URL);
     window.scrollTo(0, 0);
     getAlbums();
     getTopUsers();
     getFriends();
-    getSuggestedFriends();
-    getSuggestedPhotos();
+    getUserInfo();
   }, []);
 
   return (
     <div className="home-body">
       <div className="left-side">
         <div className="profile-card">
-          <h2>{cookies.userInfo.fName + " " + cookies.userInfo.lName}</h2>
-          <p>Email: {cookies.userInfo.email}</p>
-          <p>Birthday: {cookies.userInfo.dob}</p>
-          <p>Hometown: {cookies.userInfo.hometown}</p>
+          <h2>{userInformation[0].fName + " " + userInformation[0].lName}</h2>
+          <p>Email: {userInformation[0].email}</p>
+          <p>Birthday: {userInformation[0].dob}</p>
+          <p>Hometown: {userInformation[0].hometown}</p>
           <p>
             Contribution:{" "}
-            <span className="big-number">{cookies.userInfo.contribution}</span>
+            <span className="big-number">
+              {userInformation[0].contribution}
+            </span>
           </p>
           <button
             className="default-btn"
@@ -180,7 +178,7 @@ function Home() {
               });
             }}
           >
-            Sign Out
+            Add Friend
           </button>
         </div>
 
@@ -195,7 +193,8 @@ function Home() {
       </div>
 
       <div className="profile-body">
-        <div class="topnav">
+        {/* <div class="topnav">
+        
           <a href="#addfriend">Search UserID</a>
           <input
             type="text"
@@ -214,7 +213,8 @@ function Home() {
           >
             Search
           </button>
-        </div>
+        </div>*/}
+
         <div className="section friends-div">
           <h2>Friend List</h2>
           <div class="scroll">
@@ -233,18 +233,6 @@ function Home() {
         </div>
         <div className="section suggestion-div">
           <h2>Suggested Friends</h2>
-          {suggestedFriends.map((val, key) => {
-
-            return <>
-
-              <div className="suggested-friend-card">
-                <h3> {val.fName + "\n" + val.lName} </ h3>
-              </ div>
-
-            </>
-
-          })}
-
         </div>
         <div className="section albums-div">
           <div className="album-div-top">
@@ -274,14 +262,14 @@ function Home() {
                     set_albumName(e.target.value);
                   }}
                 />
-                <button
+                {/* <button
                   className="default-btn close"
                   onClick={(e) => {
                     createAlbum();
                   }}
                 >
                   Create
-                </button>
+                </button> */}
               </div>
             </div>
           </div>
@@ -302,7 +290,7 @@ function Home() {
                   <div className="album-card-stats">
                     <div className="album-card-stats-top">
                       <h3>{val.name}</h3>
-                      <button
+                      {/* <button
                         className="default-btn"
                         id="trash-btn"
                         onClick={(e) => {
@@ -310,7 +298,7 @@ function Home() {
                         }}
                       >
                         <img src={trashcan} />
-                      </button>
+                      </button> */}
                     </div>
 
                     <p>{"Date created: " + val.doc.substring(0, 10)}</p>
@@ -320,22 +308,9 @@ function Home() {
             })}
           </div>
         </div>
-        <div className="section suggested-photos-div">
-        <h2>Recommended Photos</h2>
-
-            {suggestedPhotos.map((val, key) => {
-              return<>
-              <div className="suggested-friend-card" key={key}>
-                <p>{val.caption}</p>
-              </div>
-              </>
-            })}
-
-        </div>
-
       </div>
     </div>
   );
 }
 
-export default Home;
+export default OtherUsers;
