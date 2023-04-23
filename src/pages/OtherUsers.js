@@ -148,7 +148,7 @@ function OtherUsers() {
   };
 
   useEffect(() => {
-    console.log(window.URL);
+    //console.log(window.URL);
     window.scrollTo(0, 0);
     getAlbums();
     getTopUsers();
