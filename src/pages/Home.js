@@ -15,7 +15,7 @@ function Home() {
   const [searchUID, set_search_uid] = useState(0); // BB added
   const [suggestedFriends, set_suggested_friends] = useState([]); // BB added
   const [suggestedPhotos, set_suggested_photos] = useState([]); // BB added
-
+  const [allPhotos, set_all_photos] = useState([]); // EC added
 
   //Base URL of the URL that holds all the APIs, just add the URI to complete the URL ex: /get-user
   let baseURL = "https://cse412project-server.onrender.com";
@@ -134,7 +134,6 @@ function Home() {
     );
   };
 
-
   const getSuggestedPhotos = async (uid) => {
     const date = Date.now();
     let currentDate = null;
@@ -147,6 +146,22 @@ function Home() {
     Axios.get(baseURL + "/get-suggested-photos/" + cookies.userInfo.UID).then(
       (response) => {
         set_suggested_photos(response.data);
+      }
+    );
+  };
+
+  const getAllPhotos = async (uid) => {
+    const date = Date.now();
+    let currentDate = null;
+    //Very bad programming practice but makes sure the userInfo cookie is set before using its value in the API call
+    do {
+      currentDate = Date.now();
+    } while (currentDate - date < 500);
+    //console.log("Getting RP");
+
+    Axios.get(baseURL + "/get-suggested-photos/" + cookies.userInfo.UID).then(
+      (response) => {
+        set_all_photos(response.data);
       }
     );
   };
@@ -235,17 +250,14 @@ function Home() {
         <div className="section suggestion-div">
           <h2>Suggested Friends</h2>
           {suggestedFriends.map((val, key) => {
-
-            return <>
-
-              <div className="suggested-friend-card">
-                <h3> {val.fName + "\n" + val.lName} </ h3>
-              </ div>
-
-            </>
-
+            return (
+              <>
+                <div className="suggested-friend-card">
+                  <h3> {val.fName + "\n" + val.lName} </h3>
+                </div>
+              </>
+            );
           })}
-
         </div>
         <div className="section albums-div">
           <div className="album-div-top">
@@ -322,18 +334,33 @@ function Home() {
           </div>
         </div>
         <div className="section suggested-photos-div">
-        <h2>Recommended Photos</h2>
+          <h2>Recommended Photos</h2>
 
-            {suggestedPhotos.map((val, key) => {
-              return<>
-              <div className="suggested-friend-card" key={key}>
-                <p>{val.caption}</p>
-              </div>
+          {suggestedPhotos.map((val, key) => {
+            return (
+              <>
+                <div className="suggested-friend-card" key={key}>
+                  <p>{val.caption}</p>
+                </div>
               </>
-            })}
-
+            );
+          })}
         </div>
 
+        <div className="section browse-div">
+          <h2>Feed</h2>
+          <div class="scroll">
+            Lorem Ipsum is simply dummy text of the printing and typesetting
+            industry. Lorem Ipsum has been the industry's standard dummy text
+            ever since the 1500s, when an unknown printer took a galley of type
+            and scrambled it to make a type specimen book. It has survived not
+            only five centuries, but also the leap into electronic typesetting,
+            remaining essentially unchanged. It was popularised in the 1960s
+            with the release of Letraset sheets containing Lorem Ipsum passages,
+            and more recently with desktop publishing software like Aldus
+            PageMaker including versions of Lorem Ipsum.
+          </div>
+        </div>
       </div>
     </div>
   );
