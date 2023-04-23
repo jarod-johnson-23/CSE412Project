@@ -6,6 +6,7 @@ import SignUp from "./pages/SignUp";
 import Home from "./pages/Home";
 import Album from "./pages/Album";
 import Photo from "./pages/Photo";
+import Comments from "./pages/Comments";
 import { CookiesProvider } from "react-cookie";
 import Navbar from "./Navbar";
 
@@ -39,6 +40,7 @@ function App() {
           <Route path="/home" element={<Home />} />
           <Route path="/album/:aid" element={<Album />} />
           <Route path="/photo/:pid" element={<Photo />} />
+          <Route path="/comment-search" element={<Comments />} />
         </Routes>
       </BrowserRouter>
     </CookiesProvider>
