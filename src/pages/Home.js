@@ -124,7 +124,7 @@ function Home() {
     do {
       currentDate = Date.now();
     } while (currentDate - date < 500);
-    Axios.get(baseURL + "/get-friends/:uid" + cookies.userInfo.UID).then(
+    Axios.get(baseURL + "/get-friends/" + cookies.userInfo.UID).then(
       (response) => {
         set_friendship(response.data);
       }
@@ -190,7 +190,15 @@ function Home() {
           <h2>Friend List</h2>
           <div class="scroll">
             {userName.map((val, key) => {
-              return <p>{val.fName + " " + val.lName}</p>;
+              return (
+                <p>
+                  {val.fName +
+                    " " +
+                    val.lName +
+                    "\t since " +
+                    val.since.substring(0, 10)}
+                </p>
+              );
             })}
           </div>
         </div>
