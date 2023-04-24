@@ -8,6 +8,7 @@ import Album from "./pages/Album";
 import Photo from "./pages/Photo";
 import Comments from "./pages/Comments";
 import OtherUsers from "./pages/OtherUsers";
+import Tags from "./pages/Tags";
 import { CookiesProvider } from "react-cookie";
 import Navbar from "./Navbar";
 
@@ -43,6 +44,7 @@ function App() {
           <Route path="/photo/:pid" element={<Photo />} />
           <Route path="/comment-search" element={<Comments />} />
           <Route path="/other-user/:uid" element={<OtherUsers />} />
+          <Route path="/tag-search" element={<Tags />} />
         </Routes>
       </BrowserRouter>
     </CookiesProvider>

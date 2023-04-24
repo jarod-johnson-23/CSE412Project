@@ -26,8 +26,17 @@ function Navbar() {
         onClick={(e) => {
           navigate("/comment-search");
         }}
-        >Comment Search
-        </button>
+      >
+        Comment Search
+      </button>
+      <button
+        className="default-btn"
+        onClick={(e) => {
+          navigate("/tag-search");
+        }}
+      >
+        Tag Search
+      </button>
       <button
         className="default-btn"
         onClick={(e) => {

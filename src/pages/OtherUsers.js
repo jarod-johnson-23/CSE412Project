@@ -1,7 +1,7 @@
 import "./OtherUsers.css";
 import { useState, useEffect } from "react";
 import { useCookies } from "react-cookie";
-import { useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import placeholder from "./../img/placeholder.png";
 import trashcan from "./../img/trashcan.svg";
 import Axios from "axios";
@@ -14,6 +14,7 @@ function OtherUsers() {
   const [userName, set_friendship] = useState([]); //EC added
   const [searchUID, set_search_uid] = useState(0);
   const [userInformation, set_user_info] = useState([""]);
+  let { uid } = useParams();
 
   //Base URL of the URL that holds all the APIs, just add the URI to complete the URL ex: /get-user
   let baseURL = "https://cse412project-server.onrender.com";
@@ -39,7 +40,7 @@ function OtherUsers() {
       currentDate = Date.now();
     } while (currentDate - date < 500);
     Axios.post(baseURL + "/get-personal-albums", {
-      uid: userId,
+      uid: uid,
     }).then((response) => {
       set_albums(response.data);
     });
@@ -77,7 +78,7 @@ function OtherUsers() {
   const createAlbum = () => {
     Axios.post(baseURL + "/add-album", {
       name: albumName,
-      ownerID: userId,
+      ownerID: uid,
     }).then((response) => {
       if (response.data === "Success") {
         //Also bad programming practice but refreshes the page so the new album is displayed
@@ -112,7 +113,7 @@ function OtherUsers() {
     do {
       currentDate = Date.now();
     } while (currentDate - date < 500);
-    Axios.get(baseURL + "/get-friends/" + userId).then((response) => {
+    Axios.get(baseURL + "/get-friends/" + uid).then((response) => {
       set_friendship(response.data);
     });
   };
@@ -124,7 +125,7 @@ function OtherUsers() {
     do {
       currentDate = Date.now();
     } while (currentDate - date < 500);
-    Axios.get(baseURL + "/get-user-info/" + userId).then((response) => {
+    Axios.get(baseURL + "/get-user-info/" + uid).then((response) => {
       set_user_info(response.data);
     });
   };
@@ -135,6 +136,7 @@ function OtherUsers() {
     getTopUsers();
     getFriends();
     getUserInfo();
+    console.log(uid);
   }, []);
 
   return (
@@ -159,7 +161,35 @@ function OtherUsers() {
               {userInformation[0].contribution}
             </span>
           </p>
-          <button className="default-btn" onClick={(e) => {}}>
+          <button
+            className="default-btn"
+            onClick={(e) => {
+              Axios.post(baseURL + "/check-friendship", {
+                uid1: cookies.userInfo.UID,
+                uid2: uid,
+              }).then((response) => {
+                if (response.data === 0) {
+                  console.log("Not friends");
+                  Axios.post(baseURL + "/add-friend", {
+                    uid1: cookies.userInfo.UID,
+                    uid2: uid,
+                  }).then((response) => {
+                    if (response.data === "SUCCESS") {
+                      //Also bad programming practice but refreshes the page so the new album is displayed
+                      //window.location.reload(false);
+                      console.log("Successfully added friend!");
+                    } else {
+                      console.log("Failed to add friend");
+                    }
+                  });
+                  //Also bad programming practice but refreshes the page so the new album is displayed
+                  //window.location.reload(false);
+                } else {
+                  console.log("Already Friends");
+                }
+              });
+            }}
+          >
             Add Friend
           </button>
         </div>
