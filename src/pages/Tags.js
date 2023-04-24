@@ -13,6 +13,8 @@ function Tags() {
   const [album, set_album] = useState([]);
   const [photo, set_photo] = useState([]);
   const [tagList, set_tags] = useState([]);
+  const [popList, set_popular_tags] = useState([]);
+  const [parsedTags, set_parsed_tags] = useState([]);
   let { state } = useParams();
 
   let navigate = useNavigate();
@@ -21,39 +23,42 @@ function Tags() {
     window.scrollTo(0, 0);
     // get all images given the state of the button for all or personal photos.
     get_tags();
-
+    getPopularTags();
 
     console.log(state);
-
   }, []);
 
   let baseURL = "https://cse412project-server.onrender.com";
   //let baseURL = "http://localhost:3307/";
 
   const get_tags = () => {
-    if (state == "A")
-    {
-        Axios.get(baseURL + "/get-all-images-by-tag/").then(
-            (response) => {
-              set_tags(response.data);
-              //console.log(response.data);
-            }
-          );
+    if (state == "A") {
+      Axios.get(baseURL + "/get-all-images-by-tag/").then((response) => {
+        set_tags(response.data);
+        //console.log(response.data);
+      });
+    } else if (state == "P") {
+      Axios.get(
+        baseURL + "/get-user-images-by-tag/" + cookies.userInfo.UID
+      ).then((response) => {
+        set_tags(response.data);
+        //console.log(response.data);
+      });
+    } else {
+      console.log("Error in tag-search");
     }
-    else if (state == "P")
-    {
-        Axios.get(baseURL + "/get-user-images-by-tag/" + cookies.userInfo.UID).then(
-            (response) => {
-              set_tags(response.data);
-              //console.log(response.data);
-            }
-          );
-    }
-    else
-    {
-        console.log("Error in tag-search")
-    }
+  };
 
+  const getPopularTags = async (uid) => {
+    const date = Date.now();
+    let currentDate = null;
+    //Very bad programming practice but makes sure the userInfo cookie is set before using its value in the API call
+    do {
+      currentDate = Date.now();
+    } while (currentDate - date < 500);
+    Axios.get(baseURL + "/get-popular-tags/").then((response) => {
+      set_popular_tags(response.data);
+    });
   };
 
   return (
@@ -77,7 +82,7 @@ function Tags() {
         />
         <button
           onClick={() => {
-            get_tags();
+            //get_parsed_tags(search_term.split(", "));
           }}
         >
           Search
@@ -87,7 +92,6 @@ function Tags() {
           onClick={() => {
             navigate("/tag-search/P");
             window.location.reload(false);
-            
           }}
         >
           View Personal
@@ -97,36 +101,44 @@ function Tags() {
           onClick={() => {
             navigate("/tag-search/A");
             window.location.reload(false);
-
           }}
         >
           View All
         </button>
-
       </div>
-      <div>
-        {tagList.map((val, key) => {
-          var arrayBuff = new Uint8Array(val.data.data);
-          var blob = new Blob([arrayBuff], { type: "image/jpg" });
-          var urlCreate = window.URL || window.webkitURL;
-          var image = urlCreate.createObjectURL(blob);
-          return (
-            <div className="photo-card" key={key}>
-              <img
-                src={image}
-                id={val.pid}
-                onClick={(e) => {
-                  navigate("/photo/" + val.pid);
-                }}
-              />
-              <div className="album-photo-body">
-                <div className="photo-details">
-                  <h3>{val.date.substring(0, 10)}</h3>
-                  <div className="photo-details-bottom">
-                    <p>{val.caption}</p>
+      <div className="home-body">
+        <div className="left-side">
+          <div className="top-user-card">
+            <h2>Top Tags:</h2>
+            {popList.map((val, key) => {
+              return <p>{val.name}</p>;
+            })}
+          </div>
+        </div>
+
+        <div className="profile-body">
+          {tagList.map((val, key) => {
+            var arrayBuff = new Uint8Array(val.data.data);
+            var blob = new Blob([arrayBuff], { type: "image/jpg" });
+            var urlCreate = window.URL || window.webkitURL;
+            var image = urlCreate.createObjectURL(blob);
+            return (
+              <div className="photo-card" key={key}>
+                <img
+                  src={image}
+                  id={val.pid}
+                  onClick={(e) => {
+                    navigate("/photo/" + val.pid);
+                  }}
+                />
+                <div className="album-photo-body">
+                  <div className="photo-details">
+                    <h3>{val.date.substring(0, 10)}</h3>
+                    <div className="photo-details-bottom">
+                      <p>{val.caption}</p>
+                    </div>
                   </div>
-                </div>
-                {/* <div className="tag-details">
+                  {/* <div className="tag-details">
                   <p>Tags:</p>
                   {tagList
                     .filter((tag, key) => tag.pid === val.pid)
@@ -136,10 +148,11 @@ function Tags() {
                       </p>
                     ))}
                 </div> */}
+                </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
       </div>
     </>
   );
