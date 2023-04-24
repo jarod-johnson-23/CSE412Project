@@ -307,6 +307,11 @@
   transition: 0.2s;
 }
 
+.suggested-friend-card:hover {
+  cursor: pointer;
+  scale: 1.05;
+}
+
 .all-feed {
   margin: 10px;
   min-width: 300px;

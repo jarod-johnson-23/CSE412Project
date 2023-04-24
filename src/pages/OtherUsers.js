@@ -244,47 +244,9 @@ function OtherUsers() {
             })}
           </div>
         </div>
-        <div className="section suggestion-div">
-          <h2>Suggested Friends</h2>
-        </div>
         <div className="section albums-div">
           <div className="album-div-top">
-            <h2>Your Photo Albums</h2>
-            <button
-              className="default-btn"
-              onClick={(e) => {
-                openPopup();
-              }}
-            >
-              New Album +
-            </button>
-            <div className="popup">
-              <div className="popup-content">
-                <div className="popup-top">
-                  <h2>Create a new Album</h2>
-                  <button className="default-btn close" onClick={(e) => {}}>
-                    Close
-                  </button>
-                </div>
-                <input
-                  type="text"
-                  className="text-field"
-                  placeholder="Album Name"
-                  value={albumName}
-                  onChange={(e) => {
-                    set_albumName(e.target.value);
-                  }}
-                />
-                {/* <button
-                  className="default-btn close"
-                  onClick={(e) => {
-                    createAlbum();
-                  }}
-                >
-                  Create
-                </button> */}
-              </div>
-            </div>
+            <h2>Photo Albums</h2>
           </div>
 
           <div className="album-rows">
