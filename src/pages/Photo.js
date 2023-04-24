@@ -129,7 +129,11 @@ function Photo() {
           <div className="photo-tags">
             <p>Tags: </p>
             {list_tags.map((val, key) => {
-              return <p> {val.name} </p>;
+              return (
+                <>
+                  <p>{val.name} </p>
+                </>
+              );
             })}
           </div>
           <p id="error-msg"></p>
