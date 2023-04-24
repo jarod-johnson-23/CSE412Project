@@ -45,6 +45,8 @@ function App() {
           <Route path="/comment-search" element={<Comments />} />
           <Route path="/other-user/:uid" element={<OtherUsers />} />
           <Route path="/tag-search" element={<Tags />} />
+          <Route path="/tag-search/:state" element={<Tags />} />
+          
         </Routes>
       </BrowserRouter>
     </CookiesProvider>

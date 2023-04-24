@@ -20,7 +20,7 @@ function Navbar() {
   //This is the HTML that is displayed in the navbar across all pages
   return (
     <div className="navbar-body">
-      <h1 onClick={() => {
+      <h1 className="home-button" onClick={() => {
         navigate("/home");
       }}>Facebook, but better</h1>
       <button
@@ -34,7 +34,7 @@ function Navbar() {
       <button
         className="default-btn"
         onClick={(e) => {
-          navigate("/tag-search");
+          navigate("/tag-search/A");
         }}
       >
         Tag Search

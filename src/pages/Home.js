@@ -252,9 +252,14 @@ function Home() {
           {suggestedFriends.map((val, key) => {
             return (
               <>
-                <div className="suggested-friend-card">
+                < div onClick={() => {
+                  navigate("/other-user/" + val.UID);
+
+                }} className="suggested-friend-card">
                   <h3> {val.fName + " " + val.lName} </h3>
-                  <p> {val.UID} </p>
+                  <p> {"UID: " + val.UID} </p>
+                  <p> {"Number of Mutuals: " + val.numFriends} </p>
+
                 </div>
               </>
             );

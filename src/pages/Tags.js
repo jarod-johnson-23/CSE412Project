@@ -13,23 +13,47 @@ function Tags() {
   const [album, set_album] = useState([]);
   const [photo, set_photo] = useState([]);
   const [tagList, set_tags] = useState([]);
+  let { state } = useParams();
 
   let navigate = useNavigate();
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    // get all images given the state of the button for all or personal photos.
+    get_tags();
+
+
+    console.log(state);
+
   }, []);
 
   let baseURL = "https://cse412project-server.onrender.com";
   //let baseURL = "http://localhost:3307/";
 
   const get_tags = () => {
-    Axios.get(baseURL + "/get-all-images-by-tag/" + search_term).then(
-      (response) => {
-        set_tags(response.data);
-        //console.log(response.data);
-      }
-    );
+    if (state == "A")
+    {
+        Axios.get(baseURL + "/get-all-images-by-tag/").then(
+            (response) => {
+              set_tags(response.data);
+              //console.log(response.data);
+            }
+          );
+    }
+    else if (state == "P")
+    {
+        Axios.get(baseURL + "/get-user-images-by-tag/" + cookies.userInfo.UID).then(
+            (response) => {
+              set_tags(response.data);
+              //console.log(response.data);
+            }
+          );
+    }
+    else
+    {
+        console.log("Error in tag-search")
+    }
+
   };
 
   return (
@@ -58,6 +82,27 @@ function Tags() {
         >
           Search
         </button>
+
+        <button
+          onClick={() => {
+            navigate("/tag-search/P");
+            window.location.reload(false);
+            
+          }}
+        >
+          View Personal
+        </button>
+
+        <button
+          onClick={() => {
+            navigate("/tag-search/A");
+            window.location.reload(false);
+
+          }}
+        >
+          View All
+        </button>
+
       </div>
       <div>
         {tagList.map((val, key) => {

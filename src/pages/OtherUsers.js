@@ -169,6 +169,7 @@ function OtherUsers() {
                 uid1: cookies.userInfo.UID,
                 uid2: uid,
               }).then((response) => {
+                
                 if (response.data === 0) {
                   console.log("Not friends");
                   Axios.post(baseURL + "/add-friend", {

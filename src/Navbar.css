@@ -32,3 +32,7 @@
   color: #e8871e;
   scale: 1.06;
 }
+
+.home-button:hover {
+  cursor: pointer;
+}
