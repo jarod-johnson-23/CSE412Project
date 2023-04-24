@@ -127,7 +127,7 @@ function Home() {
       currentDate = Date.now();
     } while (currentDate - date < 500);
     console.log("Getting RF");
-    Axios.get(baseURL + "/get-suggested-friends/" + cookies.userInfo.UID).then(
+    Axios.get(baseURL + "/get-friends-of-friends/" + cookies.userInfo.UID).then(
       (response) => {
         set_suggested_friends(response.data);
       }
@@ -143,28 +143,28 @@ function Home() {
     } while (currentDate - date < 500);
     console.log("Getting RP");
 
-    Axios.get(baseURL + "/get-suggested-photos/" + cookies.userInfo.UID).then(
+    Axios.get(baseURL + "/recommend-photos/" + cookies.userInfo.UID).then(
       (response) => {
         set_suggested_photos(response.data);
       }
     );
   };
 
-  const getAllPhotos = async (uid) => {
-    const date = Date.now();
-    let currentDate = null;
-    //Very bad programming practice but makes sure the userInfo cookie is set before using its value in the API call
-    do {
-      currentDate = Date.now();
-    } while (currentDate - date < 500);
-    //console.log("Getting RP");
+  // const getAllPhotos = async (uid) => {
+  //   const date = Date.now();
+  //   let currentDate = null;
+  //   //Very bad programming practice but makes sure the userInfo cookie is set before using its value in the API call
+  //   do {
+  //     currentDate = Date.now();
+  //   } while (currentDate - date < 500);
+  //   //console.log("Getting RP");
 
-    Axios.get(baseURL + "/get-suggested-photos/" + cookies.userInfo.UID).then(
-      (response) => {
-        set_all_photos(response.data);
-      }
-    );
-  };
+  //   Axios.get(baseURL + "/get-suggested-photos/" + cookies.userInfo.UID).then(
+  //     (response) => {
+  //       set_all_photos(response.data);
+  //     }
+  //   );
+  // };
 
   useEffect(() => {
     window.scrollTo(0, 0);

@@ -20,7 +20,7 @@ function Tags() {
     window.scrollTo(0, 0);
   }, []);
 
-  let baseURL = "https://cse412project-server.onrender.com/";
+  let baseURL = "https://cse412project-server.onrender.com";
   //let baseURL = "http://localhost:3307/";
 
   const get_tags = () => {

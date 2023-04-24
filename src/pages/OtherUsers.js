@@ -20,7 +20,7 @@ function OtherUsers() {
   let baseURL = "https://cse412project-server.onrender.com";
   //let baseURL = "http://localhost:3307";
 
-  const userId = 10001;
+  // const userId = 10001;
 
   const navigate = useNavigate();
 
@@ -132,11 +132,12 @@ function OtherUsers() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    getAlbums();
-    getTopUsers();
-    getFriends();
-    getUserInfo();
     console.log(uid);
+
+    getAlbums(uid);
+    getTopUsers();
+    getFriends(uid);
+    getUserInfo(uid);
   }, []);
 
   return (
