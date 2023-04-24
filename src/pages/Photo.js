@@ -13,6 +13,7 @@ function Photo() {
   const [comment_text, set_comment_text] = useState("");
   const [usernames, set_usernames] = useState([]);
   const [cookies, setCookie, removeCookie] = useCookies(["userInfo"]);
+  const [list_tags, set_tags] = useState([]);
   //pid is the value that is passed in by the URL
   let { pid } = useParams();
   let navigate = useNavigate();
@@ -93,6 +94,12 @@ function Photo() {
     });
   };
 
+  const getTags = () => {
+    Axios.get(baseURL + "/get-image-tags/" + pid).then((response) => {
+      set_tags(response.data);
+    });
+  };
+
   //All this code is run on page load
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -100,6 +107,7 @@ function Photo() {
     getComments();
     getLikes();
     getUsernames();
+    getTags();
   }, []);
 
   return (
@@ -118,6 +126,12 @@ function Photo() {
           <h3>{photo.caption}</h3>
           <p>Date: {date}</p>
           <p>Likes: {likes}</p>
+          <div className="photo-tags">
+            <p>Tags: </p>
+            {list_tags.map((val, key) => {
+              return <p> {val.name} </p>;
+            })}
+          </div>
           <p id="error-msg"></p>
           <button
             className="default-btn"
