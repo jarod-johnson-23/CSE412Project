@@ -17,8 +17,6 @@ function SignUp() {
   const [gender, set_gender] = useState("");
   const [password, set_password] = useState("");
   const [hometown, set_hometown] = useState("");
-  //Variable allows me to change the style/text of this specific element
-  const error1 = document.querySelector(".su-error-text");
   //Regex to make sure user types in a valid date
   const regex = new RegExp(`^\\d{4}-\\d{2}-\\d{2}$`);
 
@@ -40,9 +38,7 @@ function SignUp() {
       gender.length === 0 ||
       !regex.test(dob)
     ) {
-      //This code is run if user did not fill out fields correctly
-      const error1 = document.querySelector(".su-error-text");
-      error1.style.visibility = "visible";
+      console.log("INVALID INPUTS");
     } else {
       //Otherwise call the API to add a user to the database
       Axios.post("https://cse412project-server.onrender.com/register-user", {
@@ -82,7 +78,6 @@ function SignUp() {
             placeholder="Email"
             value={email}
             onChange={(e) => {
-              error1.style.visibility = "hidden";
               set_email(e.target.value);
             }}
           />
@@ -92,7 +87,6 @@ function SignUp() {
             placeholder="First Name"
             value={fName}
             onChange={(e) => {
-              error1.style.visibility = "hidden";
               set_fName(e.target.value);
             }}
           />
@@ -102,7 +96,6 @@ function SignUp() {
             placeholder="Hometown"
             value={hometown}
             onChange={(e) => {
-              error1.style.visibility = "hidden";
               set_hometown(e.target.value);
             }}
           />
@@ -112,7 +105,6 @@ function SignUp() {
             placeholder="Gender"
             value={gender}
             onChange={(e) => {
-              error1.style.visibility = "hidden";
               set_gender(e.target.value);
             }}
           />
@@ -124,7 +116,6 @@ function SignUp() {
             placeholder="Password"
             value={password}
             onChange={(e) => {
-              error1.style.visibility = "hidden";
               set_password(e.target.value);
             }}
           />
@@ -134,7 +125,6 @@ function SignUp() {
             placeholder="Last Name"
             value={lName}
             onChange={(e) => {
-              error1.style.visibility = "hidden";
               set_lName(e.target.value);
             }}
           />
@@ -144,7 +134,6 @@ function SignUp() {
             placeholder="Date of Birth (YYYY-MM-DD)"
             value={dob}
             onChange={(e) => {
-              error1.style.visibility = "hidden";
               set_dob(e.target.value);
             }}
           />
@@ -157,7 +146,6 @@ function SignUp() {
           >
             Create Account
           </button>
-          <p className="su-error-text">Invalid Inputs</p>
         </div>
       </div>
     </div>
