@@ -126,13 +126,13 @@ function Photo() {
           <h3>{photo.caption}</h3>
           <p>Date: {date}</p>
           <p>Likes: {likes}</p>
-          <div className="photo-tags">
+          <div className="photo-tags tags-div-photos">
             <p>Tags: </p>
             {list_tags.map((val, key) => {
               return (
-                <>
-                  <p>{val.name} </p>
-                </>
+                <div>
+                  <p className="tags-text">{val.name} </p>
+                </div>
               );
             })}
           </div>
