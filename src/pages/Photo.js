@@ -131,7 +131,15 @@ function Photo() {
             {list_tags.map((val, key) => {
               return (
                 <div>
-                  <p className="tags-text">{val.name} </p>
+                  <p
+                    className="tags-text"
+                    onClick={() => {
+                      navigate("/tag-search/A/" + val.name);
+                      window.location.reload(false);
+                    }}
+                  >
+                    {val.name}
+                  </p>
                 </div>
               );
             })}

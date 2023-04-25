@@ -139,6 +139,7 @@ function Tags() {
           className="default-btn go-back"
           onClick={(e) => {
             navigate(-1);
+            //window.location.reload(false);
           }}
         >
           Go Back
@@ -188,6 +189,7 @@ function Tags() {
                   className="tag-text"
                   onClick={() => {
                     navigate("/tag-search/A/" + val.name);
+                    window.location.reload(false);
                   }}
                 >
                   {val.name}
@@ -224,7 +226,14 @@ function Tags() {
                     {tagList
                       .filter((tag, key) => tag.pid === val.pid)
                       .map((correctTag) => (
-                        <p key={correctTag.name + correctTag.pid}>
+                        <p
+                          key={correctTag.name + correctTag.pid}
+                          className="tag-text"
+                          onClick={() => {
+                            navigate("/tag-search/A/" + correctTag.name);
+                            window.location.reload(false);
+                          }}
+                        >
                           {correctTag.name}
                         </p>
                       ))}

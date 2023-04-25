@@ -110,3 +110,7 @@
 .tags-text {
   margin: 5px 0 5px 0;
 }
+.tags-text:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
