@@ -163,8 +163,15 @@ function Tags() {
 
         <button
           onClick={() => {
-            navigate("/tag-search/P");
-            window.location.reload(false);
+            if (search_term) {
+                navigate("/tag-search/P/" + search_term);
+                window.location.reload(false);
+            }
+            else {
+                navigate("/tag-search/P");
+                window.location.reload(false);
+            }
+            
           }}
         >
           View Personal
@@ -172,8 +179,14 @@ function Tags() {
 
         <button
           onClick={() => {
-            navigate("/tag-search/A");
-            window.location.reload(false);
+            if (search_term) {
+                navigate("/tag-search/A/" + search_term);
+                window.location.reload(false);
+            }
+            else {
+                navigate("/tag-search/A");
+                window.location.reload(false);
+            }
           }}
         >
           View All
@@ -188,7 +201,7 @@ function Tags() {
                 <p
                   className="tag-text"
                   onClick={() => {
-                    navigate("/tag-search/A/" + val.name);
+                    navigate("/tag-search/"+ state +"/" + val.name);
                     window.location.reload(false);
                   }}
                 >
