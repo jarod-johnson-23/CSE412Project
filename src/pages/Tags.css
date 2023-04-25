@@ -113,6 +113,11 @@
   padding: 10px;
 }
 
+.tag-text:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
 .popup-top {
   display: flex;
   flex-direction: row;

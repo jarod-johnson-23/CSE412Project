@@ -183,7 +183,16 @@ function Tags() {
           <div className="top-user-card">
             <h2>Top Tags:</h2>
             {popList.map((val, key) => {
-              return <p>{val.name}</p>;
+              return (
+                <p
+                  className="tag-text"
+                  onClick={() => {
+                    navigate("/tag-search/A/" + val.name);
+                  }}
+                >
+                  {val.name}
+                </p>
+              );
             })}
           </div>
         </div>
